@@ -3,6 +3,11 @@
 [ext_resource type="Script" uid="uid://s6ttpnw0y5si" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://b6enn3yi5k2x7" path="res://player/player-idle.png" id="1_rkbax"]
 [ext_resource type="Texture2D" uid="uid://b1sq6gl4fvgey" path="res://player/player-run.png" id="2_g1dw6"]
+[ext_resource type="Texture2D" uid="uid://cki1dp7hvm1xj" path="res://player/player-duck.png" id="2_yw30f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7oew"]
+atlas = ExtResource("2_yw30f")
+region = Rect2(0, 0, 80, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yw30f"]
 atlas = ExtResource("1_rkbax")
@@ -62,6 +67,14 @@ region = Rect2(720, 0, 80, 80)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e7oew"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e7oew")
+}],
+"loop": true,
+"name": &"crouch",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yw30f")
@@ -125,9 +138,8 @@ script = ExtResource("1_g1dw6")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=226895639]
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_e7oew")
-animation = &"idle"
+animation = &"crouch"
 autoplay = "idle"
-frame_progress = 0.3533893
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=763946292]
 position = Vector2(0, -20)

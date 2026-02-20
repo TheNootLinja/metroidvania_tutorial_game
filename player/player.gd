@@ -1,32 +1,36 @@
 extends CharacterBody2D
 
+const GRAVITY = 1000
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+enum State { idle, run }
 
+var current_state
 
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
+func _ready():
+	current_state = State.idle
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-		if direction > 0:
-			$AnimatedSprite2D.flip_h = false
-		else:
-			$AnimatedSprite2D.flip_h = true
-		$AnimatedSprite2D.play("run")
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		$AnimatedSprite2D.play("idle")
-
-
+func _physics_process(delta):
+	player_falling(delta)
 	move_and_slide()
+	player_idle(delta)
+	player_run(delta)
+	#$AnimatedSprite2D.play(State[current_state])
+	print(State)
+	
+
+func player_falling(delta):
+	if !is_on_floor():
+		velocity.y += GRAVITY * delta
+		
+func player_idle(delta):
+	if is_on_floor():
+		current_state = State.idle
+		
+func player_run(delta):
+	# Returns either 1 or -1 so we can determine the direction
+	var direction = Input.get_axis("move_left","move_right")
+	if direction:
+		velocity.x = direction * 300
+		current_state = State.run
+	else:
+		velocity.x = 0
